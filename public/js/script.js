@@ -130,23 +130,21 @@ function generateRandomCombo() {
 // 將隨機搭配加入購物車
 function addRandomToCart() {
     if (currentCombo) {
-        currentCombo.items.forEach(item => cart.push({ item, price: currentCombo.total / 2 })); // 拆分價格
+        // 將陣列轉換為顯示字串
+        const comboName = `${currentCombo.items[0]} + ${currentCombo.items[1]}`;
+
+        // 將隨機搭配加入購物車
+        cart.push({
+            item: comboName,
+            price: currentCombo.total
+        });
+
         totalPrice += currentCombo.total;
-        cartCount += currentCombo.items.length;
+        cartCount++;
 
         updateCart();
-        showNotification('隨機搭配已加入購物車');
+        showNotification(`隨機搭配「${comboName}」已加入購物車`);
     }
-}
-
-// 加入購物車
-function addToCart(item, price) {
-    cart.push({ item, price });
-    totalPrice += price;
-    cartCount += 1;
-
-    updateCart();
-    showNotification(`${item} 已加入購物車`);
 }
 
 // 更新購物車
@@ -162,6 +160,26 @@ function updateCart() {
     // 更新購物車數量
     cartCountElement.textContent = `(${cartCount})`;
 }
+
+// 隨機搭配功能
+function generateRandomCombo() {
+    const randomFood = foods[Math.floor(Math.random() * foods.length)];
+    const randomDrink = drinks[Math.floor(Math.random() * drinks.length)];
+    currentCombo = {
+        items: [randomFood.name, randomDrink.name],
+        total: randomFood.price + randomDrink.price
+    };
+
+    const selectionElement = document.getElementById('random-selection');
+    selectionElement.innerHTML = `
+        餐點: ${randomFood.name} + 飲料: ${randomDrink.name} <br>
+        價格: $${currentCombo.total}
+    `;
+
+    const addButton = document.getElementById('add-random-to-cart');
+    addButton.style.display = 'inline-block'; // 顯示加入購物車按鈕
+}
+
 
 // 顯示購物車
 function showCart() {
