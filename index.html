@@ -40,13 +40,17 @@
 
     <!-- 購物車 -->
     <div id="cart-modal" class="cart-modal">
-        <div class="cart-modal-content">
-            <span class="close-btn" onclick="closeCart()">×</span>
+        <div class="cart-content">
             <h2>購物車</h2>
             <ul id="cart-items"></ul>
             <p>總金額: <span id="total-price">$0</span></p>
+            <button onclick="closeCart()">關閉</button>
+            <button onclick="submitCart()">送出購物車</button>
         </div>
     </div>
+
+<div id="toast-notification" class="toast"></div>
+
 
     <!-- 提示訊息 -->
     <div id="toast-notification" class="toast"></div>
