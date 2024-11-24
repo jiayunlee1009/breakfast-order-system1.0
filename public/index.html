@@ -3,47 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>資料輸入測試</title>
+    <title>WebMe！</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>輸入資料到資料庫</h1>
-    <form id="dataForm">
-        <label for="username">姓名：</label>
-        <input type="text" id="username" name="username" required><br><br>
+    <!-- 側拉清單 -->
+    <div class="sidebar" id="sidebar">
+        <button class="close-btn" onclick="toggleSidebar()">×</button>
+        <h2> 點餐</h2>
+        <ul class="menu">
+            <li>
+                <a href="#" onclick="toggleSubmenu('submenu-home')">首頁</a>
+                <ul id="submenu-home" class="submenu">
+                    <li><a href="#toast" onclick="showContent('toast', true)">吐司</a></li>
+                    <li><a href="#pancake" onclick="showContent('pancake', true)">蛋餅</a></li>
+                    <li><a href="#burger" onclick="showContent('burger', true)">漢堡</a></li>
+                    <li><a href="#pasta" onclick="showContent('pasta', true)">鐵板麵</a></li>
+                    <li><a href="#drink" onclick="showContent('drink', true)">飲料</a></li>
+                    <li><a href="#random" onclick="showContent('random', true)">隨機餐點搭配</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#cart" onclick="showCart()">購物車 <span id="cart-count">(0)</span></a>
+            </li>
+        </ul>
+    </div>
 
-        <label for="email">電子郵件：</label>
-        <input type="email" id="email" name="email" required><br><br>
-        
+    <!-- 主內容 -->
+    <div class="main-content">
+        <button class="open-btn" onclick="toggleSidebar()">☰</button>
+        <div id="content">
+            <h1>歡迎光臨WebMe！</h1>
+            <p>請按左側選單點餐</p>
+        </div>
+    </div>
 
-        <button type="submit">送出</button>
-    </form>
+    <!-- 購物車 -->
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <span class="close-btn" onclick="closeCart()">×</span>
+            <h2>購物車</h2>
+            <ul id="cart-items"></ul>
+            <p>總金額: <span id="total-price">$0</span></p>
+        </div>
+    </div>
 
-    <p id="response"></p>
+    <!-- 提示訊息 -->
+    <div id="toast-notification" class="toast"></div>
 
-    <script>
-        document.getElementById('dataForm').addEventListener('submit', async (e) => {
-            e.preventDefault(); // 防止表單提交後刷新頁面
-
-            // 收集表單數據
-            const formData = {
-                username: document.getElementById('username').value,  // 修改為 'username'
-                email: document.getElementById('email').value
-            };
-
-            // 發送數據到伺服器
-            try {
-                const response = await fetch('/submit', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                });
-                const result = await response.json();
-                document.getElementById('response').innerText = result.message;
-            } catch (error) {
-                document.getElementById('response').innerText = '發生錯誤，請稍後再試！';
-                console.error('錯誤：', error);
-            }
-        });
-    </script>
+    <script src="scripts.js"></script>
 </body>
 </html>
